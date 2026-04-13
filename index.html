@@ -1,246 +1,474 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>SR CALO · Prensa</title>
-<link rel="icon" type="image/x-icon" href="">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500;600&family=Barlow+Condensed:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
-<script src="script.js" defer></script>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>SR CALO · Prensa</title>
+    <link rel="icon" type="image/x-icon" href="" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500;600&family=Barlow+Condensed:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="logo">SR <span>CALO</span></div>
+      <button class="sync-btn" id="syncBtn" onclick="openModal()">
+        <div class="dot" id="dot"></div>
+        <span id="syncLbl">CONFIG</span>
+      </button>
+    </header>
 
-<header class="topbar">
-  <div class="logo">SR <span>CALO</span></div>
-  <button class="sync-btn" id="syncBtn" onclick="openModal()">
-    <div class="dot" id="dot"></div>
-    <span id="syncLbl">CONFIG</span>
-  </button>
-</header>
-
-<main class="main">
-  <div class="banner" id="banner" onclick="openModal()" style="display:none">
-    ⚠ Configura el ID del Google Sheet para conectar los datos
-  </div>
-
-  <!-- ═══ REGISTRAR / EDITAR ═══ -->
-  <div class="page on" id="page-form">
-    <div class="hero" data-ghost="PRENSA">
-      <div class="hero-tag">// Gestión de revistas</div>
-      <div class="hero-h">PRENSA<br>SR CALO</div>
-    </div>
-    <div class="strip">
-      <div class="sc"><span class="sv" id="h-prod">—</span><span class="sl">Producidas</span></div>
-      <div class="sc bl"><span class="sv" id="h-ing">—</span><span class="sl">Ingresos</span></div>
-      <div class="sc"><span class="sv" id="h-gas">—</span><span class="sl">Gastos</span></div>
-      <div class="sc hi"><span class="sv" id="h-gan">—</span><span class="sl">Ganancia</span></div>
-    </div>
-
-    <div class="sh"><span class="sh-t">REGISTRO</span><div class="sh-l"></div></div>
-    <div class="fwrap">
-
-      <!-- Selector de edición -->
-      <div class="ed-box">
-        <span class="ed-box-lbl">Seleccionar edición</span>
-        <div class="ed-row">
-          <select class="ed-sel" id="edSel" onchange="onEdChange()">
-            <option value="new">+ Nueva edición</option>
-          </select>
-          <div class="ed-badge new" id="edBadge">NUEVA</div>
-        </div>
-        <div class="ed-hint" id="edHint"></div>
+    <main class="main">
+      <div
+        class="banner"
+        id="banner"
+        onclick="openModal()"
+        style="display: none"
+      >
+        ⚠ Configura el ID del Google Sheet para conectar los datos
       </div>
 
-      <!-- Ubicación -->
-      <div class="loc-tog">
-        <button class="loc-btn agas" id="bgas" onclick="setLoc('gasolinera')">⛽ GASOLINERA</button>
-        <button class="loc-btn" id="bbar" onclick="setLoc('bar')">🍺 BAR</button>
+      <!-- ═══ REGISTRAR / EDITAR ═══ -->
+      <div class="page on" id="page-form">
+        <div class="hero" data-ghost="PRENSA">
+          <div class="hero-tag">// Gestión de revistas</div>
+          <div class="hero-h">PRENSA<br />SR CALO</div>
+        </div>
+        <div class="strip">
+          <div class="sc">
+            <span class="sv" id="h-prod">—</span
+            ><span class="sl">Producidas</span>
+          </div>
+          <div class="sc bl">
+            <span class="sv" id="h-ing">—</span><span class="sl">Ingresos</span>
+          </div>
+          <div class="sc">
+            <span class="sv" id="h-gas">—</span><span class="sl">Gastos</span>
+          </div>
+          <div class="sc hi">
+            <span class="sv" id="h-gan">—</span><span class="sl">Ganancia</span>
+          </div>
+        </div>
+
+        <div class="sh">
+          <span class="sh-t">REGISTRO</span>
+          <div class="sh-l"></div>
+        </div>
+        <div class="fwrap">
+          <!-- Selector de edición -->
+          <div class="ed-box">
+            <span class="ed-box-lbl">Seleccionar edición</span>
+            <div class="ed-row">
+              <select class="ed-sel" id="edSel" onchange="onEdChange()">
+                <option value="new">+ Nueva edición</option>
+              </select>
+              <div class="ed-badge new" id="edBadge">NUEVA</div>
+            </div>
+            <div class="ed-hint" id="edHint"></div>
+          </div>
+
+          <!-- Ubicación -->
+          <div class="loc-tog">
+            <button
+              class="loc-btn agas"
+              id="bgas"
+              onclick="setLoc('gasolinera')"
+            >
+              ⛽ GASOLINERA
+            </button>
+            <button class="loc-btn" id="bbar" onclick="setLoc('bar')">
+              🍺 BAR
+            </button>
+          </div>
+
+          <div class="pp">
+            Coste: <span id="pp-c">—</span> €/ud &nbsp;·&nbsp; Venta:
+            <span id="pp-s">—</span> €/ud
+          </div>
+
+          <div class="fgrid">
+            <div class="fg">
+              <label class="fl">Entregadas</label>
+              <input
+                class="fi"
+                type="number"
+                id="f-ent"
+                placeholder="35"
+                min="0"
+                oninput="calc()"
+              />
+            </div>
+            <div class="fg">
+              <label class="fl">Vendidas</label>
+              <input
+                class="fi"
+                type="number"
+                id="f-vend"
+                placeholder="28"
+                min="0"
+                oninput="calc()"
+              />
+            </div>
+            <div class="fg">
+              <label class="fl">Recollidas</label>
+              <input
+                class="fi"
+                type="number"
+                id="f-rec"
+                placeholder="7"
+                min="0"
+                oninput="calc()"
+              />
+            </div>
+            <div class="fg">
+              <label class="fl">Balance</label>
+              <div
+                class="cb"
+                style="
+                  height: 44px;
+                  padding: 8px 13px;
+                  display: flex;
+                  align-items: center;
+                "
+              >
+                <div class="cb-v" id="cv-bal" style="font-size: 0.95rem">—</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="calc-row">
+            <div class="cb">
+              <div class="cb-l">Coste</div>
+              <div class="cb-v" id="cv-cost">—</div>
+            </div>
+            <div class="cb">
+              <div class="cb-l">Ingreso</div>
+              <div class="cb-v" id="cv-ing">—</div>
+            </div>
+            <div class="cb">
+              <div class="cb-l">Beneficio</div>
+              <div class="cb-v" id="cv-ben">—</div>
+            </div>
+          </div>
+
+          <button class="sbtn" id="sbtn" onclick="doSubmit()">
+            GUARDAR REGISTRO
+          </button>
+        </div>
       </div>
 
-      <div class="pp">Coste: <span id="pp-c">—</span> €/ud &nbsp;·&nbsp; Venta: <span id="pp-s">—</span> €/ud</div>
-
-      <div class="fgrid">
-        <div class="fg">
-          <label class="fl">Entregadas</label>
-          <input class="fi" type="number" id="f-ent" placeholder="35" min="0" oninput="calc()">
+      <!-- ═══ GASOLINERA ═══ -->
+      <div class="page" id="page-gas">
+        <div class="hero" data-ghost="GAS">
+          <div class="hero-tag">⛽ Prensa SR Calo</div>
+          <div class="hero-h">GASOLI<br />NERA</div>
         </div>
-        <div class="fg">
-          <label class="fl">Vendidas</label>
-          <input class="fi" type="number" id="f-vend" placeholder="28" min="0" oninput="calc()">
+        <div class="strip">
+          <div class="sc">
+            <span class="sv" id="g-ent">—</span
+            ><span class="sl">Entregadas</span>
+          </div>
+          <div class="sc bl">
+            <span class="sv" id="g-vend">—</span
+            ><span class="sl">Vendidas</span>
+          </div>
+          <div class="sc">
+            <span class="sv" id="g-rec">—</span
+            ><span class="sl">Recollidas</span>
+          </div>
+          <div class="sc hi">
+            <span class="sv" id="g-ing">—</span><span class="sl">Ingreso</span>
+          </div>
         </div>
-        <div class="fg">
-          <label class="fl">Recollidas</label>
-          <input class="fi" type="number" id="f-rec" placeholder="7" min="0" oninput="calc()">
+        <div class="sh">
+          <span class="sh-t">HISTÓRICO</span
+          ><span class="sh-n" id="g-cnt">—</span>
+          <div class="sh-l"></div>
         </div>
-        <div class="fg">
-          <label class="fl">Balance</label>
-          <div class="cb" style="height:44px;padding:8px 13px;display:flex;align-items:center">
-            <div class="cb-v" id="cv-bal" style="font-size:.95rem">—</div>
+        <div class="twrap">
+          <div class="loading" id="g-load">
+            <div class="spin"></div>
+            Cargando...
+          </div>
+          <table class="dt" id="g-tbl" style="display: none">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Ed.</th>
+                <th>Entregadas</th>
+                <th>Vendidas</th>
+                <th>Recollidas</th>
+                <th>Ingreso</th>
+              </tr>
+            </thead>
+            <tbody id="g-body"></tbody>
+          </table>
+          <div class="empty" id="g-empty" style="display: none">
+            Sin datos registrados
           </div>
         </div>
       </div>
 
-      <div class="calc-row">
-        <div class="cb"><div class="cb-l">Coste</div><div class="cb-v" id="cv-cost">—</div></div>
-        <div class="cb"><div class="cb-l">Ingreso</div><div class="cb-v" id="cv-ing">—</div></div>
-        <div class="cb"><div class="cb-l">Beneficio</div><div class="cb-v" id="cv-ben">—</div></div>
+      <!-- ═══ BAR ═══ -->
+      <div class="page" id="page-bar">
+        <div class="hero" data-ghost="BAR">
+          <div class="hero-tag">🍺 Prensa SR Calo</div>
+          <div class="hero-h">BAR<br />DA S.R.</div>
+        </div>
+        <div class="strip">
+          <div class="sc">
+            <span class="sv" id="b-ent">—</span
+            ><span class="sl">Entregadas</span>
+          </div>
+          <div class="sc bl">
+            <span class="sv" id="b-vend">—</span
+            ><span class="sl">Vendidas</span>
+          </div>
+          <div class="sc">
+            <span class="sv" id="b-rec">—</span
+            ><span class="sl">Recollidas</span>
+          </div>
+          <div class="sc hi">
+            <span class="sv" id="b-ing">—</span><span class="sl">Ingreso</span>
+          </div>
+        </div>
+        <div class="sh">
+          <span class="sh-t">HISTÓRICO</span
+          ><span class="sh-n" id="b-cnt">—</span>
+          <div class="sh-l"></div>
+        </div>
+        <div class="twrap">
+          <div class="loading" id="b-load">
+            <div class="spin"></div>
+            Cargando...
+          </div>
+          <table class="dt" id="b-tbl" style="display: none">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Ed.</th>
+                <th>Entregadas</th>
+                <th>Vendidas</th>
+                <th>Recollidas</th>
+                <th>Ingreso</th>
+                <th>Notas</th>
+              </tr>
+            </thead>
+            <tbody id="b-body"></tbody>
+          </table>
+          <div class="empty" id="b-empty" style="display: none">
+            Sin datos registrados
+          </div>
+        </div>
       </div>
 
-      <button class="sbtn" id="sbtn" onclick="doSubmit()">GUARDAR REGISTRO</button>
-    </div>
-  </div>
-
-  <!-- ═══ GASOLINERA ═══ -->
-  <div class="page" id="page-gas">
-    <div class="hero" data-ghost="GAS">
-      <div class="hero-tag">⛽ Prensa SR Calo</div>
-      <div class="hero-h">GASOLI<br>NERA</div>
-    </div>
-    <div class="strip">
-      <div class="sc"><span class="sv" id="g-ent">—</span><span class="sl">Entregadas</span></div>
-      <div class="sc bl"><span class="sv" id="g-vend">—</span><span class="sl">Vendidas</span></div>
-      <div class="sc"><span class="sv" id="g-rec">—</span><span class="sl">Recollidas</span></div>
-      <div class="sc hi"><span class="sv" id="g-ing">—</span><span class="sl">Ingreso</span></div>
-    </div>
-    <div class="sh"><span class="sh-t">HISTÓRICO</span><span class="sh-n" id="g-cnt">—</span><div class="sh-l"></div></div>
-    <div class="twrap">
-      <div class="loading" id="g-load"><div class="spin"></div>Cargando...</div>
-      <table class="dt" id="g-tbl" style="display:none">
-        <thead><tr><th></th><th>Ed.</th><th>Entregadas</th><th>Vendidas</th><th>Recollidas</th><th>Ingreso</th></tr></thead>
-        <tbody id="g-body"></tbody>
-      </table>
-      <div class="empty" id="g-empty" style="display:none">Sin datos registrados</div>
-    </div>
-  </div>
-
-  <!-- ═══ BAR ═══ -->
-  <div class="page" id="page-bar">
-    <div class="hero" data-ghost="BAR">
-      <div class="hero-tag">🍺 Prensa SR Calo</div>
-      <div class="hero-h">BAR<br>DA S.R.</div>
-    </div>
-    <div class="strip">
-      <div class="sc"><span class="sv" id="b-ent">—</span><span class="sl">Entregadas</span></div>
-      <div class="sc bl"><span class="sv" id="b-vend">—</span><span class="sl">Vendidas</span></div>
-      <div class="sc"><span class="sv" id="b-rec">—</span><span class="sl">Recollidas</span></div>
-      <div class="sc hi"><span class="sv" id="b-ing">—</span><span class="sl">Ingreso</span></div>
-    </div>
-    <div class="sh"><span class="sh-t">HISTÓRICO</span><span class="sh-n" id="b-cnt">—</span><div class="sh-l"></div></div>
-    <div class="twrap">
-      <div class="loading" id="b-load"><div class="spin"></div>Cargando...</div>
-      <table class="dt" id="b-tbl" style="display:none">
-        <thead><tr><th></th><th>Ed.</th><th>Entregadas</th><th>Vendidas</th><th>Recollidas</th><th>Ingreso</th><th>Notas</th></tr></thead>
-        <tbody id="b-body"></tbody>
-      </table>
-      <div class="empty" id="b-empty" style="display:none">Sin datos registrados</div>
-    </div>
-  </div>
-
-  <!-- ═══ RESUMEN ═══ -->
-  <div class="page" id="page-res">
-    <div class="hero" data-ghost="STATS">
-      <div class="hero-tag">// Resumen general</div>
-      <div class="hero-h">ESTA<br>DÍSTICAS</div>
-    </div>
-    <div class="sh"><span class="sh-t">TOTALES</span><div class="sh-l"></div></div>
-    <div class="rgrid">
-      <div class="bs"><div class="bs-l">Producidas</div><div class="bs-v" id="r-prod">—</div><div class="bs-s">Total acumulado</div></div>
-      <div class="bs"><div class="bs-l">Ediciones</div><div class="bs-v" id="r-ed">—</div><div class="bs-s">Publicadas</div></div>
-      <div class="bs bl"><div class="bs-l">Ingresos</div><div class="bs-v" id="r-ing">—</div><div class="bs-s">Total recaudado</div></div>
-      <div class="bs"><div class="bs-l">Gastos</div><div class="bs-v" id="r-gas">—</div><div class="bs-s">Coste producción</div></div>
-    </div>
-    <div class="rgrid">
-      <div class="bs hi full"><div class="bs-l">Ganancia neta</div><div class="bs-v" id="r-gan">—</div><div class="bs-s" id="r-gans">—</div></div>
-    </div>
-    <div class="sh"><span class="sh-t">COMPARATIVA</span><div class="sh-l"></div></div>
-    <div style="padding:0 16px 4px">
-      <div class="cmp">
-        <div class="cmp-h"><span class="cmp-n" style="color:var(--blue-l)">⛽ Gasolinera</span><span class="cmp-v" id="cmp-gv">—</span></div>
-        <div class="bar-t"><div class="bar-f" id="cmp-gb" style="background:var(--blue-l)"></div></div>
+      <!-- ═══ RESUMEN ═══ -->
+      <div class="page" id="page-res">
+        <div class="hero" data-ghost="STATS">
+          <div class="hero-tag">// Resumen general</div>
+          <div class="hero-h">ESTADÍSTICAS</div>
+        </div>
+        <div class="sh">
+          <span class="sh-t">TOTALES</span>
+          <div class="sh-l"></div>
+        </div>
+        <div class="rgrid">
+          <div class="bs">
+            <div class="bs-l">Producidas</div>
+            <div class="bs-v" id="r-prod">—</div>
+            <div class="bs-s">Total acumulado</div>
+          </div>
+          <div class="bs">
+            <div class="bs-l">Ediciones</div>
+            <div class="bs-v" id="r-ed">—</div>
+            <div class="bs-s">Publicadas</div>
+          </div>
+          <div class="bs bl">
+            <div class="bs-l">Ingresos</div>
+            <div class="bs-v" id="r-ing">—</div>
+            <div class="bs-s">Total recaudado</div>
+          </div>
+          <div class="bs">
+            <div class="bs-l">Gastos</div>
+            <div class="bs-v" id="r-gas">—</div>
+            <div class="bs-s">Coste producción</div>
+          </div>
+        </div>
+        <div class="rgrid">
+          <div class="bs hi full">
+            <div class="bs-l">Ganancia neta</div>
+            <div class="bs-v" id="r-gan">—</div>
+            <div class="bs-s" id="r-gans">—</div>
+          </div>
+        </div>
+        <div class="sh">
+          <span class="sh-t">COMPARATIVA</span>
+          <div class="sh-l"></div>
+        </div>
+        <div style="padding: 0 16px 4px">
+          <div class="cmp">
+            <div class="cmp-h">
+              <span class="cmp-n" style="color: var(--blue-l)"
+                >⛽ Gasolinera</span
+              ><span class="cmp-v" id="cmp-gv">—</span>
+            </div>
+            <div class="bar-t">
+              <div
+                class="bar-f"
+                id="cmp-gb"
+                style="background: var(--blue-l)"
+              ></div>
+            </div>
+          </div>
+          <div class="cmp">
+            <div class="cmp-h">
+              <span class="cmp-n" style="color: var(--white)">🍺 Bar</span
+              ><span class="cmp-v" id="cmp-bv">—</span>
+            </div>
+            <div class="bar-t">
+              <div
+                class="bar-f"
+                id="cmp-bb"
+                style="background: var(--white-d)"
+              ></div>
+            </div>
+          </div>
+        </div>
+        <div class="sh">
+          <span class="sh-t">CONFIG</span>
+          <div class="sh-l"></div>
+        </div>
+        <div style="padding: 0 16px 16px">
+          <div
+            style="
+              font-family: var(--mono);
+              font-size: 0.6rem;
+              color: var(--white-d);
+              margin-bottom: 10px;
+            "
+          >
+            Coste/revista:
+            <span id="cfg-c" style="color: var(--white)">—</span> €
+            &nbsp;|&nbsp; Venta/revista:
+            <span id="cfg-s" style="color: var(--white)">—</span> €
+          </div>
+          <button class="mbtn" onclick="openModal()">
+            ⚙ CONFIGURAR CONEXIÓN
+          </button>
+        </div>
       </div>
-      <div class="cmp">
-        <div class="cmp-h"><span class="cmp-n" style="color:var(--white)">🍺 Bar</span><span class="cmp-v" id="cmp-bv">—</span></div>
-        <div class="bar-t"><div class="bar-f" id="cmp-bb" style="background:var(--white-d)"></div></div>
+    </main>
+
+    <nav class="bnav">
+      <button class="ni on" id="nav-form" onclick="go('form')">
+        <div class="ni-ic">✚</div>
+        <span>Registrar</span>
+      </button>
+      <button class="ni" id="nav-gas" onclick="go('gas')">
+        <div class="ni-ic">⛽</div>
+        <span>Gasolinera</span>
+      </button>
+      <button class="ni" id="nav-bar" onclick="go('bar')">
+        <div class="ni-ic">🍺</div>
+        <span>Bar</span>
+      </button>
+      <button class="ni" id="nav-res" onclick="go('res')">
+        <div class="ni-ic">📊</div>
+        <span>Resumen</span>
+      </button>
+    </nav>
+
+    <!-- CONFIG MODAL -->
+    <div class="ov" id="ov" onclick="bgClose(event)">
+      <div class="modal">
+        <div class="mh"></div>
+        <div class="mt">CONFIGURACIÓN</div>
+        <div class="minfo">
+          <b>Paso 1:</b> Abre el Excel en Google Drive → clic derecho → "Abrir
+          con Google Sheets"<br />
+          <b>Paso 2:</b> Compartir → "Cualquiera con el enlace puede ver"<br />
+          <b>Paso 3:</b> Copia el ID de la URL:
+          <code>spreadsheets/d/<b>[ID]</b>/edit</code><br /><br />
+          <b>Paso 4 (para guardar/editar):</b> Extensiones → Apps Script → pega
+          este código → despliega como "Aplicación web" → acceso "Yo(tu
+          gmail)"→Qien tiene acceso: "Cualquier usuario":
+          <div class="cblock">
+            function doPost(e) { try { var d = JSON.parse(e.postData.contents);
+            var s = SpreadsheetApp.getActiveSpreadsheet()
+            .getSheetByName('REVISTAS'); var row = 5 + parseInt(d.edicion); if
+            (d.table === 'gasolinera') { s.getRange(row,2).setValue(d.edicion);
+            s.getRange(row,3).setValue(d.entregadas);
+            s.getRange(row,4).setValue(d.vendidas);
+            s.getRange(row,5).setValue(d.recollidas); } else {
+            s.getRange(row,10).setValue(d.edicion);
+            s.getRange(row,11).setValue(d.entregadas);
+            s.getRange(row,12).setValue(d.vendidas);
+            s.getRange(row,13).setValue(d.recollidas); } if (d.notas)
+            s.getRange(row,17).setValue(d.notas); return ContentService
+            .createTextOutput(JSON.stringify({success:true}))
+            .setMimeType(ContentService.MimeType.JSON); } catch(err) { return
+            ContentService
+            .createTextOutput(JSON.stringify({success:false,error:err.toString()}))
+            .setMimeType(ContentService.MimeType.JSON); } } function doGet(e){
+            return ContentService.createTextOutput('SR CALO OK'); }
+          </div>
+        </div>
+        <div class="fg" style="margin-bottom: 11px">
+          <label class="fl">Google Sheet ID *</label>
+          <input
+            class="fi"
+            type="text"
+            id="ci-sid"
+            placeholder="1BxiMVs0XRA5nFMdKvBdBZjgm..."
+          />
+        </div>
+        <div class="fg" style="margin-bottom: 11px">
+          <label class="fl">Apps Script URL (para guardar)</label>
+          <input
+            class="fi"
+            type="text"
+            id="ci-url"
+            placeholder="https://script.google.com/macros/s/.../exec"
+          />
+        </div>
+        <div class="fgrid" style="margin-bottom: 4px">
+          <div class="fg">
+            <label class="fl">€ Coste / revista</label
+            ><input
+              class="fi"
+              type="number"
+              id="ci-cost"
+              placeholder="1.00"
+              step="0.01"
+              min="0"
+            />
+          </div>
+          <div class="fg">
+            <label class="fl">€ Venta / revista</label
+            ><input
+              class="fi"
+              type="number"
+              id="ci-sell"
+              placeholder="2.00"
+              step="0.01"
+              min="0"
+            />
+          </div>
+        </div>
+        <button class="mbtn primary" onclick="saveConf()">
+          GUARDAR Y CONECTAR
+        </button>
+        <button class="mbtn" onclick="closeModal()">CANCELAR</button>
       </div>
     </div>
-    <div class="sh"><span class="sh-t">CONFIG</span><div class="sh-l"></div></div>
-    <div style="padding:0 16px 16px">
-      <div style="font-family:var(--mono);font-size:.6rem;color:var(--white-d);margin-bottom:10px">
-        Coste/revista: <span id="cfg-c" style="color:var(--white)">—</span> € &nbsp;|&nbsp; Venta/revista: <span id="cfg-s" style="color:var(--white)">—</span> €
-      </div>
-      <button class="mbtn" onclick="openModal()">⚙ CONFIGURAR CONEXIÓN</button>
-    </div>
-  </div>
-</main>
 
-<nav class="bnav">
-  <button class="ni on" id="nav-form" onclick="go('form')"><div class="ni-ic">✚</div><span>Registrar</span></button>
-  <button class="ni" id="nav-gas"  onclick="go('gas')"><div class="ni-ic">⛽</div><span>Gasolinera</span></button>
-  <button class="ni" id="nav-bar"  onclick="go('bar')"><div class="ni-ic">🍺</div><span>Bar</span></button>
-  <button class="ni" id="nav-res"  onclick="go('res')"><div class="ni-ic">📊</div><span>Resumen</span></button>
-</nav>
-
-<!-- CONFIG MODAL -->
-<div class="ov" id="ov" onclick="bgClose(event)">
-  <div class="modal">
-    <div class="mh"></div>
-    <div class="mt">CONFIGURACIÓN</div>
-    <div class="minfo">
-      <b>Paso 1:</b> Abre el Excel en Google Drive → clic derecho → "Abrir con Google Sheets"<br>
-      <b>Paso 2:</b> Compartir → "Cualquiera con el enlace puede ver"<br>
-      <b>Paso 3:</b> Copia el ID de la URL: <code>spreadsheets/d/<b>[ID]</b>/edit</code><br><br>
-      <b>Paso 4 (para guardar/editar):</b> Extensiones → Apps Script → pega este código → despliega como "Aplicación web" → acceso "Yo(tu gmail)"→Qien tiene acceso: "Cualquier usuario":
-      <div class="cblock">function doPost(e) {
-  try {
-    var d = JSON.parse(e.postData.contents);
-    var s = SpreadsheetApp.getActiveSpreadsheet()
-              .getSheetByName('REVISTAS');
-    var row = 5 + parseInt(d.edicion);
-    if (d.table === 'gasolinera') {
-      s.getRange(row,2).setValue(d.edicion);
-      s.getRange(row,3).setValue(d.entregadas);
-      s.getRange(row,4).setValue(d.vendidas);
-      s.getRange(row,5).setValue(d.recollidas);
-    } else {
-      s.getRange(row,10).setValue(d.edicion);
-      s.getRange(row,11).setValue(d.entregadas);
-      s.getRange(row,12).setValue(d.vendidas);
-      s.getRange(row,13).setValue(d.recollidas);
-    }
-    if (d.notas) s.getRange(row,17).setValue(d.notas);
-    return ContentService
-      .createTextOutput(JSON.stringify({success:true}))
-      .setMimeType(ContentService.MimeType.JSON);
-  } catch(err) {
-    return ContentService
-      .createTextOutput(JSON.stringify({success:false,error:err.toString()}))
-      .setMimeType(ContentService.MimeType.JSON);
-  }
-}
-function doGet(e){
-  return ContentService.createTextOutput('SR CALO OK');
-}</div>
-    </div>
-    <div class="fg" style="margin-bottom:11px">
-      <label class="fl">Google Sheet ID *</label>
-      <input class="fi" type="text" id="ci-sid" placeholder="1BxiMVs0XRA5nFMdKvBdBZjgm...">
-    </div>
-    <div class="fg" style="margin-bottom:11px">
-      <label class="fl">Apps Script URL (para guardar)</label>
-      <input class="fi" type="text" id="ci-url" placeholder="https://script.google.com/macros/s/.../exec">
-    </div>
-    <div class="fgrid" style="margin-bottom:4px">
-      <div class="fg"><label class="fl">€ Coste / revista</label><input class="fi" type="number" id="ci-cost" placeholder="1.00" step="0.01" min="0"></div>
-      <div class="fg"><label class="fl">€ Venta / revista</label><input class="fi" type="number" id="ci-sell" placeholder="2.00" step="0.01" min="0"></div>
-    </div>
-    <button class="mbtn primary" onclick="saveConf()">GUARDAR Y CONECTAR</button>
-    <button class="mbtn" onclick="closeModal()">CANCELAR</button>
-  </div>
-</div>
-
-<div class="toast" id="toast"></div>
-
-</body>
+    <div class="toast" id="toast"></div>
+  </body>
 </html>

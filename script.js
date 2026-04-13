@@ -309,8 +309,27 @@ async function fetchAll() {
   }
   setStatus("syncing");
   try {
-    gasD = parseRows(await gviz("B5:G34"), false);
-    barD = parseRows(await gviz("J5:Q34"), true);
+    // Leer datos individuales (filas 6-34)
+    const gasRaw = await gviz("B6:G34");
+    const barRaw = await gviz("J6:O34");
+    
+    // Leer totales directamente de la fila 2
+    const totalsRaw = await gviz("C2:F2");
+    
+    gasD = parseRows(gasRaw, false);
+    barD = parseRows(barRaw, true);
+    
+    // Parsear totales de fila 2
+    if (totalsRaw && totalsRaw.rows && totalsRaw.rows[0]) {
+      const totVals = totalsRaw.rows[0].c || [];
+      window.sheettotals = {
+        prod: totVals[0]?.v || null,
+        ing: totVals[1]?.v || null,
+        gas: totVals[2]?.v || null,
+        gan: totVals[3]?.v || null,
+      };
+    }
+    
     renderGas();
     renderBar();
     renderRes();
@@ -397,16 +416,25 @@ function renderBar() {
 function renderRes() {
   const tg = tot(gasD),
     tb = tot(barD);
-  const aEnt = tg.ent + tb.ent,
+  let aEnt = tg.ent + tb.ent,
     aIng = tg.ing + tb.ing,
     aCst = tg.cost + tb.cost,
     gain = aIng - aCst;
   const mx = Math.max(gasD.length, barD.length);
+  
+  // If totals from sheet are available, use those instead
+  if (window.sheettotals) {
+    aEnt = window.sheettotals.prod || aEnt;
+    aIng = window.sheettotals.ing || aIng;
+    aCst = window.sheettotals.gas || aCst;
+    gain = aIng - aCst;
+  }
+  
   q("r-prod").textContent = aEnt || "—";
   q("r-ed").textContent = mx || "—";
   q("r-ing").textContent = aIng ? aIng.toFixed(2) + "€" : "—";
-  q("r-gas").textContent = aCst ? aCst.toFixed(2) + "€" : "—";
-  q("r-gan").textContent = aIng ? gain.toFixed(2) + "€" : "—";
+  q("r-gas").textContent = aCst ? (aCst).toFixed(2) + "€" : "—";
+  q("r-gan").textContent = aIng ? (gain).toFixed(2) + "€" : "—";
   q("r-gans").textContent =
     aIng > 0
       ? `Margen del ${((gain / aIng) * 100).toFixed(0)}%`
@@ -423,13 +451,21 @@ function renderRes() {
 function renderHero() {
   const tg = tot(gasD),
     tb = tot(barD);
-  const aEnt = tg.ent + tb.ent,
+  let aEnt = tg.ent + tb.ent,
     aIng = tg.ing + tb.ing,
     aCst = tg.cost + tb.cost;
-  q("h-prod").textContent = aEnt+2 || "—";
+  
+  // If totals from sheet are available, use those instead
+  if (window.sheettotals) {
+    aEnt = window.sheettotals.prod || aEnt;
+    aIng = window.sheettotals.ing || aIng;
+    aCst = window.sheettotals.gas || aCst;
+  }
+  
+  q("h-prod").textContent = aEnt || "—";
   q("h-ing").textContent = aIng ? aIng.toFixed(0) + "€" : "—";
-  q("h-gas").textContent = aCst ? (aCst+2).toFixed(0)  + "€" : "—";
-  q("h-gan").textContent = aIng ? (aIng - aCst-2).toFixed(0) + "€" : "—";
+  q("h-gas").textContent = aCst ? (aCst).toFixed(0)  + "€" : "—";
+  q("h-gan").textContent = aIng ? (aIng - aCst).toFixed(0) + "€" : "—";
 }
 
 function tot(arr) {
