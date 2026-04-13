@@ -279,7 +279,7 @@ async function gviz(range) {
   return JSON.parse(txt.replace(/^[^(]+\(/, "").replace(/\);?\s*$/, "")).table;
 }
 
-function parseRows(table, hasNotes) {
+function parseRows(table) {
   if (!table || !table.rows) return [];
   return table.rows
     .map((row) => {
@@ -295,8 +295,7 @@ function parseRows(table, hasNotes) {
         vend: +(vend || 0),
         rec: +(rec || 0),
         ing: +(vend || 0) * cfg.sell,
-        cost: +(ent || 0) * cfg.cost,
-        nota: hasNotes ? v[7] || "" : "",
+        cost: +(ent || 0) * cfg.cost
       };
     })
     .filter(Boolean);
@@ -400,7 +399,6 @@ function renderBar() {
         <td><span class="pill ps">${r.vend}</span></td>
         <td>${r.rec > 0 ? `<span class="pill pr">${r.rec}</span>` : "—"}</td>
         <td class="ing">${r.ing.toFixed(2)}€</td>
-        <td class="note">${r.nota}</td>
       </tr>`,
       )
       .join("");
@@ -532,7 +530,7 @@ function copyCode() {
   navigator.clipboard.writeText(text).then(() => {
     toast("✓ Código copiado ao portapapeis", "ok");
   }).catch(() => {
-    toast("Error ao copiar o código", "ko");
+    toast("Error al copiar el código", "ko");
   });
 }
 
