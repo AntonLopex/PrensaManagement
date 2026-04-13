@@ -8,6 +8,9 @@
     />
     <title>SR CALO · Prensa</title>
     <link rel="icon" type="image/x-icon" href="img/calo-logo.png" />
+    <link rel="apple-touch-icon" href="/img/calo-logo.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500;600&family=Barlow+Condensed:wght@300;400;500;600;700&display=swap"
@@ -398,11 +401,46 @@
           <b>Paso 4 (para gardar/editar):</b> Extensións → Apps Script → pega
           este código → desprega como "Aplicación web" → acceso "Eu(teu
           gmail)"→Quen ten acceso: "Calquera usuario":
-          <div style="margin-bottom: 12px;">
-            <div class="cblock" id="code-apps-script" style="margin-bottom: 8px; overflow-x: auto; overflow-y: hidden; height: 120px; white-space: pre-wrap; word-wrap: break-word;">
-function doPost(e) { try { var d = JSON.parse(e.postData.contents); var s = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('REVISTAS'); var row = 5 + parseInt(d.edicion); if (d.table === 'gasolinera') { s.getRange(row,2).setValue(d.edicion); s.getRange(row,3).setValue(d.entregadas); s.getRange(row,4).setValue(d.vendidas); s.getRange(row,5).setValue(d.recollidas); } else { s.getRange(row,10).setValue(d.edicion); s.getRange(row,11).setValue(d.entregadas); s.getRange(row,12).setValue(d.vendidas); s.getRange(row,13).setValue(d.recollidas); } if (d.notas) s.getRange(row,17).setValue(d.notas); return ContentService.createTextOutput(JSON.stringify({success:true})).setMimeType(ContentService.MimeType.JSON); } catch(err) { return ContentService.createTextOutput(JSON.stringify({success:false,error:err.toString()})).setMimeType(ContentService.MimeType.JSON); } } function doGet(e){ return ContentService.createTextOutput('SR CALO OK'); }
+          <div style="margin-bottom: 12px">
+            <div
+              class="cblock"
+              id="code-apps-script"
+              style="
+                margin-bottom: 8px;
+                overflow-x: auto;
+                overflow-y: hidden;
+                height: 120px;
+                white-space: pre-wrap;
+                word-wrap: break-word;
+              "
+            >
+              function doPost(e) { try { var d =
+              JSON.parse(e.postData.contents); var s =
+              SpreadsheetApp.getActiveSpreadsheet().getSheetByName('REVISTAS');
+              var row = 5 + parseInt(d.edicion); if (d.table === 'gasolinera') {
+              s.getRange(row,2).setValue(d.edicion);
+              s.getRange(row,3).setValue(d.entregadas);
+              s.getRange(row,4).setValue(d.vendidas);
+              s.getRange(row,5).setValue(d.recollidas); } else {
+              s.getRange(row,10).setValue(d.edicion);
+              s.getRange(row,11).setValue(d.entregadas);
+              s.getRange(row,12).setValue(d.vendidas);
+              s.getRange(row,13).setValue(d.recollidas); } if (d.notas)
+              s.getRange(row,17).setValue(d.notas); return
+              ContentService.createTextOutput(JSON.stringify({success:true})).setMimeType(ContentService.MimeType.JSON);
+              } catch(err) { return
+              ContentService.createTextOutput(JSON.stringify({success:false,error:err.toString()})).setMimeType(ContentService.MimeType.JSON);
+              } } function doGet(e){ return ContentService.createTextOutput('SR
+              CALO OK'); }
             </div>
-            <button class="mbtn" onclick="copyCode()" title="Copiar código" style="width: 100%; padding: 6px 8px; font-size: 0.85rem;">📋 Copiar</button>
+            <button
+              class="mbtn"
+              onclick="copyCode()"
+              title="Copiar código"
+              style="width: 100%; padding: 6px 8px; font-size: 0.85rem"
+            >
+              📋 Copiar
+            </button>
           </div>
         </div>
         <div class="fg" style="margin-bottom: 11px">
