@@ -14,7 +14,7 @@ function saveConf() {
   cfg.sell = parseFloat(q("ci-sell").value) || 2;
   localStorage.setItem("srcalo", JSON.stringify(cfg));
   closeModal();
-  toast("Configuración guardada", "ok");
+  toast("Configuración gardada", "ok");
   q("banner").style.display = "none";
   updatePP();
   if (cfg.sid) fetchAll();
@@ -51,7 +51,7 @@ let editMode = false;
 function populateSel() {
   const sel = q("edSel"),
     cur = sel.value;
-  sel.innerHTML = '<option value="new">+ Nueva edición</option>';
+  sel.innerHTML = '<option value="new">+ Nova edición</option>';
   const allEds = new Set();
   gasD.forEach((r) => allEds.add(parseFloat(r.ed)));
   barD.forEach((r) => allEds.add(parseFloat(r.ed)));
@@ -71,7 +71,7 @@ function populateSel() {
     if (!allEds.has(i)) {
       const opt = document.createElement("option");
       opt.value = i;
-      opt.textContent = `Edición ${i}  (nueva)`;
+      opt.textContent = `Edición ${i}  (nova)`;
       sel.appendChild(opt);
     }
   }
@@ -112,7 +112,7 @@ function showHint(n) {
   const h = q("edHint");
   const prev = n - 1;
   if (prev >= 1) {
-    h.innerHTML = `📦 Entregando ed.<strong> ${n}</strong> — las <strong>Vendidas</strong> y <strong>Recollidas</strong> suelen ser de la edición anterior (<strong>${prev}</strong>).`;
+    h.innerHTML = `📦 Entregando ed.<strong> ${n}</strong> — as <strong>Vendidas</strong> e <strong>Recollidas</strong> solen ser da edición anterior (<strong>${prev}</strong>).`;
     h.className = "ed-hint show";
   } else h.className = "ed-hint";
 }
@@ -122,8 +122,8 @@ function setBadge(mode, n) {
     btn = q("sbtn");
   if (mode === "new") {
     b.className = "ed-badge new";
-    b.textContent = "NUEVA";
-    btn.textContent = "GUARDAR REGISTRO";
+    b.textContent = "NOVA";
+    btn.textContent = "GARDAR REXISTRO";
     btn.className = "sbtn";
   } else {
     b.className = "ed-badge edit";
@@ -167,7 +167,7 @@ function calc() {
   const bEl = q("cv-bal");
   if (ent) {
     bEl.textContent =
-      bal === 0 ? "✓ Cuadra" : bal > 0 ? `+${bal} pend.` : `${bal} extra`;
+      bal === 0 ? "✓ Cadra" : bal > 0 ? `+${bal} pend.` : `${bal} extra`;
     bEl.className = "cb-v has";
     bEl.style.color =
       bal === 0 ? "var(--green)" : bal > 0 ? "var(--blue-l)" : "#E83A3A";
@@ -193,16 +193,16 @@ async function doSubmit() {
     vend = q("f-vend").value.trim(),
     rec = q("f-rec").value.trim();
   if (!ent) {
-    toast("Rellena entregadas", "ko");
+    toast("Enche entregadas", "ko");
     return;
   }
   if (!cfg.sid) {
-    toast("Configura el Sheet ID", "ko");
+    toast("Configura o Sheet ID", "ko");
     openModal();
     return;
   }
   if (!cfg.url) {
-    toast("Configura el Apps Script URL", "ko");
+    toast("Configura o Apps Script URL", "ko");
     openModal();
     return;
   }
@@ -213,7 +213,7 @@ async function doSubmit() {
   const btn = q("sbtn");
   btn.disabled = true;
   const orig = btn.textContent;
-  btn.textContent = editMode ? "ACTUALIZANDO..." : "GUARDANDO...";
+  btn.textContent = editMode ? "ACTUALIZANDO..." : "GARDANDO...";
   try {
     const res = await fetch(cfg.url, {
       method: "POST",
@@ -228,14 +228,14 @@ async function doSubmit() {
     });
     console.log("Request sent successfully");
     toast(
-      editMode ? `✓ Edición ${edNum} actualizada` : "✓ Registro guardado",
+      editMode ? `✓ Edición ${edNum} actualizada` : "✓ Rexistro gardado",
       "ok",
     );
     if (!editMode) clearForm(true);
     setTimeout(fetchAll, 1500);
   } catch (e) {
     console.error("Submit error:", e);
-    toast("Error al conectar con Apps Script: " + e.message, "ko");
+    toast("Error ao conectar con Apps Script: " + e.message, "ko");
   }
   btn.disabled = false;
   btn.textContent = orig;
@@ -339,7 +339,7 @@ async function fetchAll() {
   } catch (e) {
     console.error(e);
     setStatus("err");
-    toast("Error al leer el Sheet. ¿Está compartido?", "ko");
+    toast("Error ao leer o Sheet. ¿Está compartido?", "ko");
     showEmpty();
   }
 }
@@ -374,7 +374,7 @@ function renderGas() {
       )
       .join("");
   }
-  q("g-cnt").textContent = gasD.length + " ediciones";
+  q("g-cnt").textContent = gasD.length + " edicións";
   const t = tot(gasD);
   q("g-ent").textContent = t.ent || "—";
   q("g-vend").textContent = t.vend || "—";
@@ -405,7 +405,7 @@ function renderBar() {
       )
       .join("");
   }
-  q("b-cnt").textContent = barD.length + " ediciones";
+  q("b-cnt").textContent = barD.length + " edicións";
   const t = tot(barD);
   q("b-ent").textContent = t.ent || "—";
   q("b-vend").textContent = t.vend || "—";
@@ -437,8 +437,8 @@ function renderRes() {
   q("r-gan").textContent = aIng ? (gain).toFixed(2) + "€" : "—";
   q("r-gans").textContent =
     aIng > 0
-      ? `Margen del ${((gain / aIng) * 100).toFixed(0)}%`
-      : "Sin datos suficientes";
+      ? `Marxe do ${((gain / aIng) * 100).toFixed(0)}%`
+      : "Sen datos suficientes";
   const m = Math.max(tg.vend, tb.vend) || 1;
   q("cmp-gv").textContent = `${tg.vend} vendidas`;
   q("cmp-bv").textContent = `${tb.vend} vendidas`;
@@ -489,7 +489,7 @@ function setStatus(s) {
     l = q("syncLbl");
   d.className = "dot" + (s ? " " + s : "");
   l.textContent =
-    { live: "EN VIVO", syncing: "SYNC...", err: "ERROR", "": "CONFIG" }[s] ||
+    { live: "EN LIÑA", syncing: "SYNC...", err: "ERROR", "": "CONFIG" }[s] ||
     "CONFIG";
 }
 function openModal() {
@@ -522,6 +522,18 @@ function q(id) {
 function updatePP() {
   q("pp-c").textContent = cfg.cost.toFixed(2);
   q("pp-s").textContent = cfg.sell.toFixed(2);
+}
+
+function copyCode() {
+  const codeBlock = q("code-apps-script");
+  if (!codeBlock) return;
+  
+  const text = codeBlock.innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    toast("✓ Código copiado ao portapapeis", "ok");
+  }).catch(() => {
+    toast("Error ao copiar o código", "ko");
+  });
 }
 
 // ═══════════════════════════════
