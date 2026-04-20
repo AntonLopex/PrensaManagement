@@ -7,10 +7,16 @@
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
     <title>SR CALO · Prensa</title>
-    <link rel="icon" type="image/x-icon" href="img/calo-logo.png" />
-    <link rel="apple-touch-icon" href="/img/calo-logo.png" />
+    <link rel="icon" type="image/png" href="img/calo-logo.png" />
+    <!-- iOS: icono en pantalla de inicio -->
+    <link rel="apple-touch-icon" href="img/calo-logo.png" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="SR CALO" />
+    <!-- Android: icono y color de la app -->
+    <link rel="manifest" href="manifest.json" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="theme-color" content="#0d0d0d" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link
       href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500;600&family=Barlow+Condensed:wght@300;400;500;600;700&display=swap"
@@ -417,7 +423,12 @@
               function doPost(e) { try { var d =
               JSON.parse(e.postData.contents); var s =
               SpreadsheetApp.getActiveSpreadsheet().getSheetByName('REVISTAS');
-              var row = 5 + parseInt(d.edicion); if (d.table === 'gasolinera') {
+              var row = 5 + parseInt(d.edicion);
+              if (d.action === 'delete') {
+              if (d.table === 'gasolinera') { s.getRange(row,2,1,5).clearContent(); }
+              else { s.getRange(row,10,1,5).clearContent(); }
+              } else {
+              if (d.table === 'gasolinera') {
               s.getRange(row,2).setValue(d.edicion);
               s.getRange(row,3).setValue(d.entregadas);
               s.getRange(row,4).setValue(d.vendidas);
@@ -425,9 +436,9 @@
               s.getRange(row,10).setValue(d.edicion);
               s.getRange(row,11).setValue(d.entregadas);
               s.getRange(row,12).setValue(d.vendidas);
-              s.getRange(row,13).setValue(d.recollidas); } if (d.notas)
-              s.getRange(row,17).setValue(d.notas); return
-              ContentService.createTextOutput(JSON.stringify({success:true})).setMimeType(ContentService.MimeType.JSON);
+              s.getRange(row,13).setValue(d.recollidas); }
+              if (d.notas) s.getRange(row,17).setValue(d.notas); }
+              return ContentService.createTextOutput(JSON.stringify({success:true})).setMimeType(ContentService.MimeType.JSON);
               } catch(err) { return
               ContentService.createTextOutput(JSON.stringify({success:false,error:err.toString()})).setMimeType(ContentService.MimeType.JSON);
               } } function doGet(e){ return ContentService.createTextOutput('SR
@@ -489,6 +500,19 @@
           GARDAR E CONECTAR
         </button>
         <button class="mbtn" onclick="closeModal()">CANCELAR</button>
+      </div>
+    </div>
+
+    <!-- DELETE CONFIRM MODAL -->
+    <div class="ov" id="del-ov" onclick="bgCloseDelModal(event)">
+      <div class="modal">
+        <div class="mh"></div>
+        <div class="mt">ELIMINAR EDICIÓN</div>
+        <div class="minfo" id="del-msg" style="text-align:center; padding: 12px 0 20px"></div>
+        <button class="mbtn primary" id="del-confirm-btn" onclick="confirmDelete()" style="background:#c0392b; border-color:#c0392b">
+          🗑 ELIMINAR
+        </button>
+        <button class="mbtn" onclick="cancelDelete()">CANCELAR</button>
       </div>
     </div>
 

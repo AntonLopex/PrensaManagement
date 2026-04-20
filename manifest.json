@@ -1,0 +1,25 @@
+{
+  "name": "SR CALO · Prensa",
+  "short_name": "SR CALO",
+  "description": "Xestión das revistas SR Calo",
+  "icons": [
+    {
+      "src": "img/calo-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "img/calo-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0d0d0d",
+  "theme_color": "#0d0d0d"
+}

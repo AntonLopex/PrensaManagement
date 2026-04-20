@@ -56,25 +56,26 @@ function populateSel() {
   gasD.forEach((r) => allEds.add(parseFloat(r.ed)));
   barD.forEach((r) => allEds.add(parseFloat(r.ed)));
   const sorted = [...allEds].filter((n) => !isNaN(n)).sort((a, b) => a - b);
-  sorted.forEach((ed) => {
+  const maxEd = sorted.length ? Math.max(...sorted) : 0;
+
+  // Mostrar TODAS las ediciones de 1 a maxEd+3, incluidos huecos
+  const allToShow = new Set([...sorted]);
+  for (let i = 1; i <= maxEd + 3 && i <= 29; i++) allToShow.add(i);
+
+  [...allToShow].sort((a, b) => a - b).forEach((ed) => {
     const hG = gasD.some((r) => parseFloat(r.ed) === ed);
     const hB = barD.some((r) => parseFloat(r.ed) === ed);
     const opt = document.createElement("option");
     opt.value = ed;
-    opt.textContent =
-      `Edición ${ed}  ` + (hG ? "⛽" : "") + " " + (hB ? "🍺" : "");
+    if (hG || hB) {
+      opt.textContent =
+        `Edición ${ed}  ` + (hG ? "⛽" : "") + " " + (hB ? "🍺" : "");
+    } else {
+      opt.textContent = `Edición ${ed}  (nova)`;
+    }
     sel.appendChild(opt);
   });
-  // Próximas ediciones sin datos
-  const maxEd = sorted.length ? Math.max(...sorted) : 0;
-  for (let i = maxEd + 1; i <= maxEd + 3 && i <= 29; i++) {
-    if (!allEds.has(i)) {
-      const opt = document.createElement("option");
-      opt.value = i;
-      opt.textContent = `Edición ${i}  (nova)`;
-      sel.appendChild(opt);
-    }
-  }
+
   if ([...sel.options].some((o) => o.value == cur)) sel.value = cur;
 }
 
@@ -266,6 +267,46 @@ function editRow(edNum, tbl) {
   );
 }
 
+// Botón eliminar desde tabla
+let _delEdNum = null, _delTbl = null;
+
+function deleteRow(edNum, tbl) {
+  _delEdNum = edNum;
+  _delTbl = tbl;
+  const loc = tbl === "gasolinera" ? "Gasolinera ⛽" : "Bar 🍺";
+  q("del-msg").innerHTML = `¿Seguro que queres borrar a edición <strong>${edNum}</strong> de <strong>${loc}</strong>?<br><br>Esta acción non se pode desfacer.`;
+  q("del-ov").classList.add("on");
+}
+
+function cancelDelete() {
+  q("del-ov").classList.remove("on");
+  _delEdNum = null;
+  _delTbl = null;
+}
+
+function bgCloseDelModal(e) {
+  if (e.target === q("del-ov")) cancelDelete();
+}
+
+async function confirmDelete() {
+  if (!_delEdNum || !_delTbl) return;
+  const edNum = _delEdNum, tbl = _delTbl;
+  q("del-ov").classList.remove("on");
+  _delEdNum = null; _delTbl = null;
+  if (!cfg.url) { toast("Configura o Apps Script URL", "ko"); return; }
+  try {
+    await fetch(cfg.url, {
+      method: "POST",
+      mode: "no-cors",
+      body: JSON.stringify({ action: "delete", table: tbl, edicion: edNum }),
+    });
+    toast(`🗑 Edición ${edNum} eliminada`, "ok");
+    setTimeout(fetchAll, 1500);
+  } catch (e) {
+    toast("Error ao eliminar: " + e.message, "ko");
+  }
+}
+
 // ═══════════════════════════════
 // FETCH
 // ═══════════════════════════════
@@ -363,7 +404,10 @@ function renderGas() {
       .map(
         (r) => `
       <tr>
-        <td class="edt-col"><button class="edt-btn" onclick="editRow(${r.ed},'gasolinera')" title="Editar">✏</button></td>
+        <td class="edt-col">
+          <button class="edt-btn" onclick="editRow(${r.ed},'gasolinera')" title="Editar">✏</button>
+          <button class="edt-btn del-btn" onclick="deleteRow(${r.ed},'gasolinera')" title="Eliminar">🗑</button>
+        </td>
         <td><span class="eb">${r.ed}</span></td>
         <td>${r.ent}</td>
         <td><span class="pill ps">${r.vend}</span></td>
@@ -393,7 +437,10 @@ function renderBar() {
       .map(
         (r) => `
       <tr>
-        <td class="edt-col"><button class="edt-btn" onclick="editRow(${r.ed},'bar')" title="Editar">✏</button></td>
+        <td class="edt-col">
+          <button class="edt-btn" onclick="editRow(${r.ed},'bar')" title="Editar">✏</button>
+          <button class="edt-btn del-btn" onclick="deleteRow(${r.ed},'bar')" title="Eliminar">🗑</button>
+        </td>
         <td><span class="eb">${r.ed}</span></td>
         <td>${r.ent}</td>
         <td><span class="pill ps">${r.vend}</span></td>
