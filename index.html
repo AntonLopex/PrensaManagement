@@ -420,29 +420,50 @@
                 word-wrap: break-word;
               "
             >
-              function doPost(e) { try { var d =
-              JSON.parse(e.postData.contents); var s =
-              SpreadsheetApp.getActiveSpreadsheet().getSheetByName('REVISTAS');
-              var row = 5 + parseInt(d.edicion);
-              if (d.action === 'delete') {
-              if (d.table === 'gasolinera') { s.getRange(row,2,1,5).clearContent(); }
-              else { s.getRange(row,10,1,5).clearContent(); }
-              } else {
-              if (d.table === 'gasolinera') {
-              s.getRange(row,2).setValue(d.edicion);
-              s.getRange(row,3).setValue(d.entregadas);
-              s.getRange(row,4).setValue(d.vendidas);
-              s.getRange(row,5).setValue(d.recollidas); } else {
-              s.getRange(row,10).setValue(d.edicion);
-              s.getRange(row,11).setValue(d.entregadas);
-              s.getRange(row,12).setValue(d.vendidas);
-              s.getRange(row,13).setValue(d.recollidas); }
-              if (d.notas) s.getRange(row,17).setValue(d.notas); }
-              return ContentService.createTextOutput(JSON.stringify({success:true})).setMimeType(ContentService.MimeType.JSON);
-              } catch(err) { return
-              ContentService.createTextOutput(JSON.stringify({success:false,error:err.toString()})).setMimeType(ContentService.MimeType.JSON);
-              } } function doGet(e){ return ContentService.createTextOutput('SR
-              CALO OK'); }
+function doPost(e) {
+  try {
+    var d = JSON.parse(e.postData.contents);
+    var s = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('REVISTAS');
+    var row = 5 + parseInt(d.edicion);
+
+    // ── ELIMINAR ──────────────────────────────────────────
+    if (d.action === 'delete') {
+      if (d.table === 'gasolinera') {
+        s.getRange(row, 2, 1, 4).clearContent(); // B,C,D,E — respeta la fórmula de coste en F
+      } else {
+        s.getRange(row, 10, 1, 4).clearContent(); // J,K,L,M — respeta la fórmula de coste en N
+      }
+
+    // ── GUARDAR / EDITAR ──────────────────────────────────
+    } else {
+      if (d.table === 'gasolinera') {
+        s.getRange(row, 2).setValue(d.edicion);
+        s.getRange(row, 3).setValue(d.entregadas);
+        s.getRange(row, 4).setValue(d.vendidas);
+        s.getRange(row, 5).setValue(d.recollidas);
+      } else {
+        s.getRange(row, 10).setValue(d.edicion);
+        s.getRange(row, 11).setValue(d.entregadas);
+        s.getRange(row, 12).setValue(d.vendidas);
+        s.getRange(row, 13).setValue(d.recollidas);
+      }
+      if (d.notas) s.getRange(row, 17).setValue(d.notas);
+    }
+
+    return ContentService
+      .createTextOutput(JSON.stringify({ success: true }))
+      .setMimeType(ContentService.MimeType.JSON);
+
+  } catch (err) {
+    return ContentService
+      .createTextOutput(JSON.stringify({ success: false, error: err.toString() }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function doGet(e) {
+  return ContentService.createTextOutput('SR CALO OK');
+}
             </div>
             <button
               class="mbtn"
